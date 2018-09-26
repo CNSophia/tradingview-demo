@@ -2,9 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+  <title>tradingview demo</title>
+  <script src="charting_library/charting_library.min.js"></script>
+  <script src="datafeeds/udf/dist/bundle.js"></script>
+  <script src="datafeeds/udf/dist/polyfills.js"></script>
 </head>
 <body>
+<div id="tv_chart_container"></div>
+<script>
+  function getParameterByName(name){
+    name = name.replace(/[\[]/,'\\[').replace(/[\]]/,'\\]');
+    var regex = new RegExp('[\\?&]'+name+'=([^&#]*)'),
+      results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g," "));
+  }
 
+  TradingView.onready(function () {
+    var widget = window.tvWidget = new TradingView.widget({
+      fullscreen: true,   //是否全屏显示
+      symbol: 'AAPL',    //苹果公司
+      interval: 'D',     //周期：天
+      container_id: 'tv_chart_container',  //指定要包含widget的DOM元素的id
+      datafeed: new Datafeeds.UDFCompatibleDatafeed('https://demo_feed.tradingview.com'),  //javascript对象的实现接口JS API 以反馈图表及数据
+      library_path: 'charting_library/',  //文件夹的路径
+      locale: getParameterByName('lang') || 'en',  //设置语言
+      drawings_access: {type: 'black',tools: [{name:'Regression Trend'}]},   //使用在UI中看到的名称相同的名称
+      disabled_features: ['use_localstorage_for_settings'],   //包含功能在默认情况下禁用名称的数组
+      enabled_features: ['study_templates'],    //包含功能在默认情况下启用名称的数组
+      charts_storage_url: 'http://saveload.tradingview.com',    //高阶图表的保存/加载
+      client_id: 'tradingview.com',   //用户组的标识符
+      user_id: 'public_user_id'     //用户的唯一标识符
+    });
+  });
+  
+  TradingView.searchSymbols(function (userInput, exchange, symbolType, onResultReadyCallback) {
+    
+  })
+</script>
 </body>
 </html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+  <title>手机黑底显示图表</title>
+  <script src="charting_library/charting_library.min.js"></script>
+  <script src="datafeeds/udf/dist/bundle.js"></script>
+  <script src="datafeeds/udf/dist/polyfills.js"></script>
+</head>
+<body>
+<div id="tv_chart_mobile_black"></div>
+<script>
+  function getParameterByName(name){
+    name = name.replace(/[\[]/,'\\[').replace(/[\]]/,'\\]');
+    var regex = new RegExp('[\\?&]'+name+'=([^&#]*)'),
+      results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g," "));
+  }
+
+  TradingView.onready(function () {
+    var widgetMobileBlack = new TradingView.widget({
+      fullscreen: true,
+      symbol: 'AAPL',
+      interval: 'D',
+      container_id: 'tv_chart_mobile_black',
+      datafeed: new Datafeeds.UDFCompatibleDatafeed("https://demo_feed.tradingview.com"),
+      library_path: 'charting_library/',
+      locale: getParameterByName('lang') || 'en',
+      drawings_access: {type: 'black',tools: [{name: 'Regression Trend'}]},
+      disabled_features: ['use_localstorage_for_settings'],
+      preset: 'mobile',
+      overrides: {         //对widget对象的默认属性进行覆盖。每个字段名是重写属性的名称，字段值是这些属性的期望值
+        'paneProperties.background': '#222',
+        'paneProperties.vertGridProperties.color': '#454545',
+        'paneProperties.horzGridProperties.color': '#454545',
+        'symbolWatermarkProperties.transparency': 90,
+        'scalesProperties.textColor': '#AAA'
+      }
+    })
+  })
+</script>
+</body>
+</html>
